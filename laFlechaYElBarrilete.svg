@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg">
+  
+  <style>
+      svg{
+        width:100%;
+        height:100%;
+        zoom:0.3;
+      }
+      .penrose{
+          stroke:black;
+          stroke-width:2.66666698;
+          stroke-linecap:round;
+          stroke-linejoin:round;
+          stroke-miterlimit:10;
+          stroke-dasharray:none;
+          stroke-opacity:1;
+      }
+      .penrose:hover{
+          cursor:pointer;
+          opacity:0.6;
+      }
+      #flecha{
+          fill:#f00;
+      }
+      #barrilete{
+          fill:#0ff;
+      }
+  </style>
+
+  <path 
+    id="flecha" class="penrose"
+    d=" M 257.5496,100 
+        L 137.10626,187.99094 
+        L 165.53907,100 
+        L 137.10626,12.009061 
+        L 257.5496,100 
+        z" />
+        
+  <path
+    id="barrilete" class="penrose"
+    d="
+      M 161.326547, 100 
+      L 132.893737,187.99094 
+      L 12.450397,100 
+      L 132.893737,12.009061 
+      L 161.326547,100 
+      z " />
+
+  <script>
+      <![CDATA[
+         (function(){
+              var barrilete = document.getElementById('barrilete');
+              var flecha = document.getElementById('flecha');
+              
+              var cx = 0,
+                  cy = 0,
+                  rotacion = 0;
+
+              barrilete.addEventListener('click', darPieza,true);
+              flecha.addEventListener('click', darPieza,true);
+              
+              function darPieza(e) {
+                  
+                  var nuevaPieza = e.target.cloneNode(true);
+                  document.getElementsByTagName('svg')[0].appendChild(nuevaPieza);
+                  document.getElementsByTagName('svg')[0].lastChild.style.transformOrigin = "center";
+                  document.getElementsByTagName('svg')[0].addEventListener('mousemove', pegar, false);
+                  
+                  document.getElementsByTagName('svg')[0].addEventListener('click', function(e){
+                      document.getElementsByTagName('svg')[0].removeEventListener('mousemove', pegar);
+                  }, true);
+
+                  document.getElementsByTagName('svg')[0].addEventListener('keydown', rotar, true);
+              }
+
+              function pegar(e){
+                  cx = e.clientX*3;
+                  cy = e.clientY*3;
+                  document.getElementsByTagName('svg')[0].lastChild.style.transform = "translate("+cx+"px, "+cy+"px) rotate("+rotacion+"deg)";
+              }
+
+              function rotar(e){
+                  switch(e.keyCode) {
+                      case 37: // left
+                          if (rotacion==0) {
+                              rotacion = 360;
+                          };
+                          rotacion -= 1;
+                          break;
+
+                      case 39: // right
+                          if (rotacion==360) {
+                              rotacion = 0;
+                          };
+                          rotacion += 1;
+                          break;
+                  }
+                  document.getElementsByTagName('svg')[0].lastChild.style.transform = "translate("+cx+"px, "+cy+"px) rotate("+rotacion+"deg)";
+              }
+         })(); 
+      ]]>
+  </script>
+
+</svg>
